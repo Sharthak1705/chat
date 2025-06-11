@@ -34,7 +34,6 @@ const Sidebar = () => {
         {users.map((user) => {
           const isSelected = selectedUser?._id === user._id;
           const isOnline = onlineUsers.includes(user._id);
-        console.log(users)
           return (
             <button
               key={user._id}

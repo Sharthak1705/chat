@@ -25,7 +25,7 @@ const MessageForm = () => {
 
   const removeImage = () => {
     setImagePreview(null);
-    
+  
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -41,7 +41,7 @@ const MessageForm = () => {
         image: imagePreview,
       });
 
-      // Clear form
+    
       setText("");
       setImagePreview(null);
       if (fileInputRef.current) {fileInputRef.current.value = ""};

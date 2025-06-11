@@ -12,7 +12,7 @@ import { useAuthStore } from "./store/useAuthStore";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckingAuth,onlineUsers } = useAuthStore();
   const { theme } = useThemeStore();
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const App = () => {
       document.documentElement.setAttribute("data-theme", theme);
     }
   }, [theme]);
-
+ console.log(onlineUsers);
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);

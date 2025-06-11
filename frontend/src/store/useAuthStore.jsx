@@ -12,24 +12,20 @@ export const useAuthStore = create((set,get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
-
+ 
   checkAuth: async () => {
-  try {
-    const res = await axiosInstance.get("/auth/check");
+    try {
+      const res = await axiosInstance.get("/auth/check");
 
-    if (res && res.data) {
       set({ authUser: res.data });
-      get().connectSocket(); // Connect to socket after setting user
-    } else {
+      get().connectSocket();
+    } catch (error) {
+      console.log("Error in checkAuth:", error);
       set({ authUser: null });
+    } finally {
+      set({ isCheckingAuth: false });
     }
-  } catch (err) {
-    console.error("Error in checkAuth:", err);
-    set({ authUser: null });
-  } finally {
-    set({ isCheckingAuth: false });
-  }
-},
+  },
 
   signup: async (data) => {
     set({ isSigningUp: true });
@@ -43,20 +39,21 @@ export const useAuthStore = create((set,get) => ({
       set({ isSigningUp: false });
     }
   },
-
-  login: async (data) => {
+login: async (data) => {
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
       toast.success("Logged in successfully");
-      get().connectSocket()
+
+      get().connectSocket();
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Login failed");
+      toast.error(error.response.data.message);
     } finally {
       set({ isLoggingIn: false });
     }
   },
+
 
   logout: async () => {
   try {
@@ -101,10 +98,18 @@ connectSocket: () => {
 
   if (!authUser || existingSocket?.connected) {return};
 
-  const socket = io(BASE_URL);
-  set({ socket });
+  const socket = io(BASE_URL,{
+  query: {
+    userId: authUser._id,
+ 
+  },
+  });
+   socket.connect();
+  set({ socket: socket});
+  socket.on("getOnlineUsers", (userIds) => {
+    set({onlineUsers: userIds})
+  })
 
-  socket.connect();
 },
 
 disconnectSocket: () =>{
