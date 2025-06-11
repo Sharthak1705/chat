@@ -99,7 +99,7 @@ connectSocket: () => {
   const { authUser } = get();
   const existingSocket = get().socket;
 
-  if (!authUser || existingSocket?.connected) return;
+  if (!authUser || existingSocket?.connected) {return};
 
   const socket = io(BASE_URL);
   set({ socket });
