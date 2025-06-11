@@ -1,80 +1,88 @@
-import React, { useEffect } from 'react'
-import { useChatStore } from '../store/useChatStore'
-import ChatHeader from "../components/ChatHeader"
-import Message from '../components/Message'
-import MessageSkeleton from './skeletons/MessageSkeleton'
-import { useAuthStore } from '../store/useAuthStore'
-import { formatMessageTime } from '../lib/utils'
+import React, { useEffect } from 'react';
+import { useChatStore } from '../store/useChatStore';
+import ChatHeader from "../components/ChatHeader";
+import MessageForm from '../components/Message'; // ✅ Corrected import
+import MessageSkeleton from './skeletons/MessageSkeleton';
+import { useAuthStore } from '../store/useAuthStore';
+import { formatMessageTime } from '../lib/utils';
+
 const ChatContainer = () => {
-  const {messages, getMessages, isMessagesLoading,selectedUser,subscribeToMessage,unsubscribeToMessage} =useChatStore()
-   const {authUser} = useAuthStore();
-   const messageEndRef = useRef(null);
+  const {
+    messages,
+    getMessages,
+    isMessagesLoading,
+    selectedUser,
+    subscribeToMessage,
+    unsubscribeFromMessage // ✅ Corrected function name
+  } = useChatStore();
+
+  const { authUser } = useAuthStore();
+
   useEffect(() => {
-  messageEndRef.current.scrollIntoView({behavior: "smooth"});
-  
-  })
+    if (selectedUser?._id) {
+      getMessages(selectedUser._id);
+      subscribeToMessage();
+    }
 
-   useEffect(()=>{
-  getMessages(selectedUser._id);
-  subscribeToMessage();
+    return () => unsubscribeFromMessage(); // ✅ Corrected function name
+  }, [selectedUser?._id, getMessages, subscribeToMessage, unsubscribeFromMessage]);
 
-  return() => unsubscribeToMessage();
-  },[selectedUser._id, getMessages,subscribeToMessage,unsubscribeToMessage]);
-  
-  if(isMessagesLoading) {
-    return (<div className='flex flex-1 overflow-auto'>
-     <ChatHeader />
-     <MessageSkeleton />
-     <Message />
-
-    </div>
+  if (isMessagesLoading) {
+    return (
+      <div className='flex flex-col flex-1 overflow-auto'>
+        <ChatHeader />
+        <div className="p-4">
+          <MessageSkeleton />
+        </div>
+        <MessageForm />
+      </div>
     );
   }
+
   return (
     <div className='flex-col flex-1 overflow-auto'>
       <ChatHeader />
-       <div className='flex-1 p-4 space-y-8 overflow-auto'>
+      <div className='flex-1 p-4 space-y-8 overflow-auto'>
         {messages.map((message) => (
-  <div
-    key={message._id}
-    className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
-    ref={messageEndRef}
-    >
-      
-    <div className="chat-image avatar">
-      <div className='border rounded-full size-10'>
-        <img 
-          src={message.senderId === authUser._id ?
-           authUser.profilePic || "/avatar.png" : 
-           selectedUser.profilePic || "/avatar.png"} 
-          alt="profile Pic"
-        />
+          <div
+            key={message._id}
+            className={`chat ${message.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+          >
+            <div className="chat-image avatar">
+              <div className='border rounded-full size-10'>
+                <img
+                  src={
+                    message.senderId === authUser._id
+                      ? authUser.profilePic || "/avatar.png"
+                      : selectedUser?.profilePic || "/avatar.png"
+                  }
+                  alt="profile Pic"
+                />
+              </div>
+            </div>
+
+            <div className='mb-1 chat-header'>
+              <time className='ml-1 text-xs opacity-50'>
+                {formatMessageTime(message.createdAt)}
+              </time>
+            </div>
+
+            <div className='flex flex-col chat-bubble'>
+              {message.image && (
+                <img
+                  src={message.image}
+                  alt="Attachment"
+                  className='sm:max-w-[200px] rounded-md mb-2'
+                />
+              )}
+              {message.text && <p>{message.text}</p>}
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
-
-    <div className='mb-1 chat-header'> 
-      <time className='ml-1 text-xs opacity-50'>
-        {formatMessageTime(message.createdAt)}
-      </time>
-    </div>
-
-    <div className='flex flex-col chat-bubble'>
-      {message.image && (
-        <img 
-          src={message.image}
-          alt="Attachment"
-          className='sm:max-w-[200px] rounded-md mb-2'
-        />
-      )}
-      {message.text && <p>{message.text}</p>}
-    </div>
-    
-  </div>
-))}
-       </div>
-      <Message />
+      <MessageForm />
     </div>
   );
-}
+};
 
 export default ChatContainer;
