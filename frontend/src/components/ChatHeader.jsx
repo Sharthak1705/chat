@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import { Video } from "lucide-react";
-import {}
+
 const ChatHeader = () => {
   const { selectedUser, setSelectedUser } = useChatStore();
   const { onlineUsers } = useAuthStore();
