@@ -11,10 +11,11 @@ import { useThemeStore } from "./store/useThemeStore";
 import { useAuthStore } from "./store/useAuthStore";
 import { Toaster } from "react-hot-toast"
 
+
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth,onlineUsers } = useAuthStore();
   const { theme } = useThemeStore();
-
+  
   useEffect(() => {
     if (theme) {
       document.documentElement.setAttribute("data-theme", theme);
@@ -35,7 +36,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <div className="h-screen" data-theme={theme}>
       <Navbar />
       <Routes>
         <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
@@ -43,10 +44,10 @@ const App = () => {
         <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/settings" element={<SettingPage />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
-    
-      </Routes>
+     
+       </Routes>
       <Toaster />
-    </>
+    </div>
   );
 };
 
