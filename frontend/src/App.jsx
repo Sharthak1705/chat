@@ -9,8 +9,7 @@ import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { useThemeStore } from "./store/useThemeStore";
 import { useAuthStore } from "./store/useAuthStore";
-import { Toaster } from "react-hot-toast"
-
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const { authUser, checkAuth, isCheckingAuth,onlineUsers } = useAuthStore();
@@ -26,7 +25,7 @@ const App = () => {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-
+   
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -44,8 +43,8 @@ const App = () => {
         <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/settings" element={<SettingPage />} />
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
-     
-       </Routes>
+       {/* <Route path="/video" element={<firebase />} /> */}
+        </Routes>
       <Toaster />
     </div>
   );

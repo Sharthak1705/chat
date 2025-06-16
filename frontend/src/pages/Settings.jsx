@@ -43,14 +43,13 @@ const SettingsPage = () => {
           ))}
         </div>
 
-        {/* Preview Section */}
         <h3 className="mb-3 text-lg font-semibold">Preview</h3>
         <div className="overflow-hidden border shadow-lg rounded-xl border-base-300 bg-base-100">
           <div className="p-4 bg-base-200">
             <div className="max-w-lg mx-auto">
-              {/* Mock Chat UI */}
+              
               <div className="overflow-hidden shadow-sm bg-base-100 rounded-xl">
-                {/* Chat Header */}
+                
                 <div className="px-4 py-3 border-b border-base-300 bg-base-100">
                   <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center w-8 h-8 font-medium rounded-full bg-primary text-primary-content">
@@ -63,7 +62,6 @@ const SettingsPage = () => {
                   </div>
                 </div>
 
-                {/* Chat Messages */}
                 <div className="p-4 space-y-4 min-h-[200px] max-h-[200px] overflow-y-auto bg-base-100">
                   {PREVIEW_MESSAGES.map((message) => (
                     <div
@@ -90,7 +88,7 @@ const SettingsPage = () => {
                   ))}
                 </div>
 
-                {/* Chat Input */}
+                
                 <div className="p-4 border-t border-base-300 bg-base-100">
                   <div className="flex gap-2">
                     <input

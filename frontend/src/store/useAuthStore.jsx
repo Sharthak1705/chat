@@ -6,7 +6,6 @@ import { io } from "socket.io-client";
 const BASE_URL =
   import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
 
-// Optional: centralized error handler
 const showError = (error, defaultMsg = "Something went wrong") => {
   toast.error(error?.response?.data?.message || error.message || defaultMsg);
 };
@@ -91,10 +90,8 @@ export const useAuthStore = create((set, get) => ({
     if (!authUser || get().socket?.connected) return;
 
     const socket = io(BASE_URL, {
-      query: {
-        userId: authUser._id,
-      },
-    });
+  query: { userId: authUser._id }
+});
 
     socket.connect();
     set({ socket });

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useChatStore } from '../store/useChatStore';
 import ChatHeader from "../components/ChatHeader";
-import MessageForm from '../components/Message'; // ✅ Corrected import
+import MessageForm from '../components/Message'; 
 import MessageSkeleton from './skeletons/MessageSkeleton';
 import { useAuthStore } from '../store/useAuthStore';
 import { formatMessageTime } from '../lib/utils';
@@ -24,7 +24,7 @@ const ChatContainer = () => {
       subscribeToMessage();
     }
 
-    return () => unsubscribeFromMessage(); // ✅ Corrected function name
+    return () => unsubscribeFromMessage(); 
   }, [selectedUser?._id, getMessages, subscribeToMessage, unsubscribeFromMessage]);
 
   if (isMessagesLoading) {
