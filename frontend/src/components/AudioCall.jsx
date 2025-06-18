@@ -30,10 +30,10 @@ const AudioCall = ({ caller, receiver, isCaller, onClose }) => {
       });
 
       peer.on("stream", remoteStream => {
-        const audio = new Audio();
+        const audio =new Audio();
         audio.srcObject = remoteStream;
         audio.play();
-      });
+      }); 
 
       if (!isCaller) {
         socket.on("incoming-call", ({ from, signal }) => {

@@ -18,7 +18,7 @@ export const logAudioCall = async (req, res) => {
       receiver,
       startTime,
       endTime,
-      type: "audio",
+      type:"audio",
       status,
     });
     res.status(201).json(newCall);
@@ -30,7 +30,7 @@ export const logAudioCall = async (req, res) => {
 
 export const getCallHistory = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const  {userId} = req.params.userId;
     const history = await Call.find({
       $or: [{ caller: userId }, { receiver: userId }],
     })
